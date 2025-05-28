@@ -91,4 +91,4 @@ queue:
   url: <%= ENV['DATABASE_URL'] %>
 
 cache:
-  url: <%= ENV['DATABASE_URL' %]
+  url: <%= ENV['DATABASE_URL'] %>

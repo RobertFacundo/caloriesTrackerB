@@ -86,3 +86,6 @@ production:
 
 cable:
   url:  <%= ENV['DATABASE_URL'] %>
+
+qeue:
+  url: <%= ENV['DATABASE_URL'] %>

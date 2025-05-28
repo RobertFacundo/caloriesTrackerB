@@ -89,3 +89,6 @@ cable:
 
 queue:
   url: <%= ENV['DATABASE_URL'] %>
+
+cache:
+  url: <%= ENV['DATABASE_URL' %]

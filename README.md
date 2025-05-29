@@ -116,6 +116,27 @@ Each stat returns:
 ### ⚖️ WeightEntry
 - `weight`, `date` per user
 
+-----
+## 🗄️ Database Configuration
+
+This application uses PostgreSQL as the database engine for all environments (development, test, and production). Here's how the setup is handled:
+
+- Adapter: PostgreSQL (pg gem)
+- Encoding: Unicode
+- Connection pooling: Controlled via RAILS_MAX_THREADS (defaults to 5)
+- Authentication:
+- - Username: postgres (or your configured user)
+- - Password: 12345 (or from environment variables)
+- - Host: localhost
+
+Environment-specific databases:
+
+- development: calories_tracker_b_development
+
+- test: calories_tracker_b_test
+
+- production: Uses ENV['DATABASE_URL'] for safety and flexibility in deployment
+
 ---
 Created By Robert Facundo
 ---

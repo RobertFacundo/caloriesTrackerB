@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Backend on Render</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        background-color: #f7f7f7;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+      }
+
+      .container {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+        max-width: 600px;
+        width: 100%;
+        text-align: center;
+      }
+
+      .container p {
+        margin-bottom: 20px;
+        font-weight: bold;
+      }
+
+      .alert {
+        font-size: 20px;
+        color: #333;
+      }
+
+      .alert strong {
+        color: #45e73c;
+      }
+
+      .info {
+        font-size: 18px;
+        color: #555;
+      }
+
+      .link {
+        font-size: 18px;
+        color: #dba134;
+        text-decoration: none;
+        font-weight: bold;
+        padding: 10px 20px;
+        background-color: #ecf0f1;
+        border-radius: 5px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      .link:hover {
+        background-color: #d0d7de;
+        color: #b4892c;
+        text-decoration: underline;
+      }
+
+      .thanks {
+        font-size: 16px;
+        color: #777;
+        margin-top: 20px;
+      }
+    </style>
+    <link rel="icon" type="image/x-icon" href="/favicon1.png" />
+  </head>
+  <body>
+    <div class="container">
+      <p class="alert">
+        ⚠️ <strong>This backend is hosted for FREE on Render</strong> and may take a few seconds to respond due to cold start.
+      </p>
+      <p class="info">
+        Now that we know the backend is up and running, feel free to visit the website:
+      </p>
+      <a class="link" href="https://calories-tracker-f.vercel.app/" target="_blank">
+        👉 Go to the website
+      </a>
+      <p class="thanks">
+        Thank you for your patience and understanding!
+      </p>
+    </div>
+  </body>
+</html>

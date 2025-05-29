@@ -16,10 +16,26 @@ class Api::V1::UsersController < ApplicationController
 
     def update_details
       return unless authorize
-      if current_user.update(details_params)
-        render json: current_user
-      else
-        render json: { errors: current_user.errors.full_messages}, status: :unprocessable_entity
+      ActiveRecord::Base.transaction do
+        if current_user.update(details_params)
+
+          calories_goal = current_user.calculate_daily_calories_goal
+          
+          if calories_goal && current_user.daily_calories_goal != calories_goal
+            current_user.update_column(:daily_calories_goal, calories_goal) 
+          end
+
+          if current_user.weight_entries.empty? && params[:user][:weight].present?
+            current_user.weight_entries.create!(
+              weight: params[:user][:weight],
+              date: Date.today
+            )
+          end  
+
+          render json: current_user
+        else
+          render json: { errors: current_user.errors.full_messages}, status: :unprocessable_entity
+        end
       end
     end   
 

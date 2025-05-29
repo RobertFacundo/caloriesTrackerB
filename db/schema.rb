@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_27_222926) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_29_153320) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,9 +52,20 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_27_222926) do
     t.integer "age"
     t.string "gender"
     t.string "activity_level"
+    t.integer "daily_calories_goal"
+  end
+
+  create_table "weight_entries", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.float "weight"
+    t.date "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["user_id"], name: "index_weight_entries_on_user_id"
   end
 
   add_foreign_key "daily_logs", "users"
   add_foreign_key "ingredients", "meals"
   add_foreign_key "meals", "daily_logs"
+  add_foreign_key "weight_entries", "users"
 end

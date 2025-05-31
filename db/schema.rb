@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_29_153320) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_30_180328) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -53,6 +53,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_29_153320) do
     t.string "gender"
     t.string "activity_level"
     t.integer "daily_calories_goal"
+    t.boolean "onboarding_completed", default: false
   end
 
   create_table "weight_entries", force: :cascade do |t|

@@ -11,7 +11,7 @@ Rails.application.routes.draw do
 
       resources :daily_logs do
         resources :meals do
-          resources :ingredients
+          resources :ingredients, only: [:create, :update, :destroy]
         end
       end
       resources :weight_entries, only: [:index, :create]

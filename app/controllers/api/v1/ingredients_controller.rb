@@ -1,7 +1,8 @@
 module Api
   module V1
     class IngredientsController < ApplicationController
-
+      before_action :authorize
+      
       def create
         daily_log = DailyLog.find_by(id: params[:daily_log_id])
         return render json: { error: 'Daily log not found' }, status: :not_found unless daily_log
@@ -42,7 +43,7 @@ module Api
         meal = daily_log.meals.find_by(id: params[:meal_id])
         return render json: {error: 'Meal not Found in this daily log'}, status: :not_found unless meal
         
-        ingredient = Ingredient.find_by(id: params[:id])
+        ingredient = meal.ingredients.find_by(id: params[:id])
         return render json: { error: 'Ingredient not found'}, status: :not_found unless ingredient
 
         ingredient.destroy

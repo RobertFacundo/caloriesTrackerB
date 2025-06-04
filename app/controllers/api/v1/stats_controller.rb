@@ -2,36 +2,58 @@ class Api::V1::StatsController < ApplicationController
   before_action :authorize
 
   def weekly
-    render json: stats_for_range(Date.today.beginning_of_week, Date.today.end_of_week)
+    render json: logs_with_nutrition_for_range(Date.today.beginning_of_week, Date.today.end_of_week)
   end
 
   def monthly
-    render json: stats_for_range(Date.today.beginning_of_month, Date.today.end_of_month)
+    render json: logs_with_nutrition_for_range(Date.today.beginning_of_month, Date.today.end_of_month)
   end
 
   def annually
-    render json: stats_for_range(Date.today.beginning_of_year, Date.today.end_of_year)
+    render json: logs_with_nutrition_for_range(Date.today.beginning_of_year, Date.today.end_of_year)
   end
 
   private
 
-  def stats_for_range(start_date, end_date)
+  def logs_with_nutrition_for_range(start_date, end_date)
     logs = current_user.daily_logs
                        .where(date: start_date..end_date)
                        .includes(:meals)
-    total_calories =logs.sum { |log| log.daily_total_nutrition[:calories].to_f}
-    average_calories = logs.any? ? total_calories / logs.size.to_f : 0
 
-    weight_entry = current_user.weight_entries
-                               .where(date: start_date..end_date)
-                               .order(:date)
-                               .last
+    weights_by_date = current_user.weight_entries
+                                  .order(:date, :created_at)
+                                  .group_by(&:date)
+                                  .transform_values { |entries| entries.last}
+    
+    sorted_weights = current_user.weight_entries.order(:date, :created_at)
+    
+    logs_data = logs.map do |log|
+      weight = weights_by_date[log.date]&.weight
+
+      if weight.nil?
+        previous_weight = sorted_weights
+                            .select{ |entry| entry.date < log.date}
+                            .last
+        weight = previous_weight&.weight
+      end
+
+      {
+        id: log.id,
+        date: log.date,
+        calories: log.daily_total_nutrition[:calories],
+        protein: log.daily_total_nutrition[:protein],
+        carbs: log.daily_total_nutrition[:carbs],
+        fat: log.daily_total_nutrition[:fat],
+        deficit: log.daily_calorie_deficit,
+        training_day: log.training_day,
+        goal: log.daily_calories_goal,
+        weight: weight
+      }
+    end
     {
       range: "#{start_date} to #{end_date}",
-      total_calories: total_calories.round,
-      average_calories: average_calories.round,
-      weight: weight_entry&.weight,
-      weight_date: weight_entry&.date 
+      total_days: logs.size,
+      logs: logs_data
     }
   end
 end

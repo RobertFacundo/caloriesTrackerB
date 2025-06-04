@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_30_180328) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_02_171702) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,6 +19,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_30_180328) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "training_day"
+    t.integer "daily_calories_goal"
     t.index ["user_id"], name: "index_daily_logs_on_user_id"
   end
 

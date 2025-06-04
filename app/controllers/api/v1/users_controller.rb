@@ -20,17 +20,27 @@
           if current_user.update(details_params.merge(onboarding_completed: true))
 
             calories_goal = current_user.calculate_daily_calories_goal
-            
             if calories_goal && current_user.daily_calories_goal != calories_goal
               current_user.update_column(:daily_calories_goal, calories_goal) 
             end
 
-            if current_user.weight_entries.empty? && params[:user][:weight].present?
-              current_user.weight_entries.create!(
-                weight: params[:user][:weight],
-                date: Date.today
-              )
-            end  
+            if params[:user][:weight].present?
+              new_weight = params[:user][:weight].to_f
+              last_entry = current_user.weight_entries.order(date: :desc).find_by(date: Date.today)
+
+              if last_entry.nil? || last_entry.weight != new_weight
+                current_user.weight_entries.create!(
+                  weight: new_weight,
+                  date: Date.today
+                )
+              end
+            end
+
+            if (log = current_user.daily_logs.find_by(date: Date.today))
+              base_goal = current_user.daily_calories_goal
+              log.daily_calories_goal = log.training_day? ? (base_goal * 1.1).to_i : base_goal
+              log.save!
+            end
 
             render json: current_user
           else

@@ -125,17 +125,17 @@ This application uses PostgreSQL as the database engine for all environments (de
 - Encoding: Unicode
 - Connection pooling: Controlled via RAILS_MAX_THREADS (defaults to 5)
 - Authentication:
-- - Username: postgres (or your configured user)
-- - Password: 12345 (or from environment variables)
+- - Username: (your configured user)
+- - Password: (your configured password or from environment variables)
 - - Host: localhost
 
 Environment-specific databases:
 
-- development: calories_tracker_b_development
+- development
 
-- test: calories_tracker_b_test
+- test
 
-- production: Uses ENV['DATABASE_URL'] for safety and flexibility in deployment
+- production
 
 
 ----

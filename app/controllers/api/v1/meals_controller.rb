@@ -14,6 +14,17 @@ module Api
         end
       end
 
+      def destroy
+        daily_log = DailyLog.find(params[:daily_log_id])
+        meal = daily_log.meals.find(params[:id])
+
+        if meal.destroy
+          head :no_content
+        else
+          render json: { errors: meal.errors.full_messages}, status: :unprocessable_entity
+        end
+      end
+
       private
 
       def meal_params

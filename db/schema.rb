@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_02_171702) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_06_202056) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -56,6 +56,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_02_171702) do
     t.string "activity_level"
     t.integer "daily_calories_goal"
     t.boolean "onboarding_completed", default: false
+    t.boolean "has_seen_home_joyride"
+    t.boolean "has_seen_profile_joyride"
   end
 
   create_table "weight_entries", force: :cascade do |t|

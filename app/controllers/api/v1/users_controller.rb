@@ -56,6 +56,6 @@
       end
 
       def details_params
-        params.require(:user).permit(:weight, :height, :age, :gender, :activity_level, :onboarding_completed)
+        params.require(:user).permit(:weight, :height, :age, :gender, :activity_level, :onboarding_completed, :has_seen_home_joyride, :has_seen_profile_joyride)
       end
   end

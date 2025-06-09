@@ -1,0 +1,272 @@
+---
+openapi: 3.0.1
+info:
+  title: API V1
+  version: v1
+paths:
+  "/api/v1/login":
+    post:
+      summary: Authenticate user and return token
+      tags:
+      - Authentication
+      parameters: []
+      responses:
+        '200':
+          description: User authenticated
+        '401':
+          description: Invalid credentials
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+              required:
+              - username
+              - password
+  "/api/v1/daily_logs":
+    get:
+      summary: Get all dailylogs for the current user
+      tags:
+      - DailyLogs
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: List of daily logs
+        '401':
+          description: Unauthorized
+    post:
+      summary: Create or find daily log for a specific date
+      tags:
+      - DailyLogs
+      security:
+      - bearer_auth: []
+      parameters: []
+      responses:
+        '201':
+          description: Daily log created or found
+        '422':
+          description: Invalid data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                date:
+                  type: string
+                  format: date
+              required:
+              - date
+  "/api/v1/daily_logs/{id}":
+    get:
+      summary: Show a specific daily log
+      tags:
+      - DailyLogs
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Daily log shown
+        '404':
+          description: Not found
+  "/api/v1/daily_logs/{daily_log_id}/meals/{meal_id}/ingredients":
+    post:
+      summary: Create an ingredient
+      tags:
+      - Ingredients
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: daily_log_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: meal_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Ingredient created
+        '422':
+          description: Invalid data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ingredient:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                    calories:
+                      type: number
+                    protein:
+                      type: number
+                    carbs:
+                      type: number
+                    fat:
+                      type: number
+                  required:
+                  - name
+                  - calories
+                  - protein
+                  - fat
+              required:
+              - ingredient
+  "/api/v1/daily_logs/{daily_log_id}/meals/{meal_id}/ingredients/{id}":
+    delete:
+      summary: Delete an ingredient
+      tags:
+      - Ingredients
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: daily_log_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: meal_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Ingredient deleted
+        '404':
+          description: Ingredient not found
+  "/api/v1/daily_logs/{daily_log_id}/meals":
+    post:
+      summary: Create a new meal for a dialy log
+      tags:
+      - Meals
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: daily_log_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '201':
+          description: Meal created
+        '422':
+          description: Invalid meal data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                meal:
+                  type: object
+                  properties:
+                    name:
+                      type: string
+                  required:
+                  - name
+              required:
+              - meal
+  "/api/v1/daily_logs/{daily_log_id}/meals/{id}":
+    delete:
+      summary: Delete a meal from a daily log
+      tags:
+      - Meals
+      security:
+      - bearer_auth: []
+      parameters:
+      - name: daily_log_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        '204':
+          description: Meal Calories
+        '404':
+          description: Meal not found
+  "/api/v1/signup":
+    post:
+      summary: Create a new user
+      tags:
+      - Users
+      parameters: []
+      responses:
+        '201':
+          description: User created
+        '422':
+          description: Invalid data
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  properties:
+                    username:
+                      type: string
+                      example: string
+                    password:
+                      type: string
+                      example: 123456a
+                  required:
+                  - username
+                  - password
+              required:
+              - user
+  "/api/v1/me":
+    get:
+      summary: get authenticated user
+      tags:
+      - Users
+      security:
+      - bearer_auth: []
+      responses:
+        '200':
+          description: Authenticated user
+        '401':
+          description: Not authorized
+servers:
+- url: "{defaultHost}"
+  variables:
+    defaultHost:
+      default: http://127.0.0.1:3000
+components:
+  securitySchemes:
+    bearer_auth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+security:
+- bearer_auth: []

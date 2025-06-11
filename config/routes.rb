@@ -10,7 +10,7 @@
         get '/stats/weekly', to: 'stats#weekly'
         get '/stats/monthly', to: 'stats#monthly'
         get '/stats/annually', to: 'stats#annually'
-        patch 'daily_logs/update_training_day', to: 'daily_logs#update_training_day'
+        patch '/daily_logs/update_training_day', to: 'daily_logs#update_training_day'
 
         resources :daily_logs do
           resources :meals do

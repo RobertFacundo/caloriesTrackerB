@@ -11,6 +11,7 @@
         get '/stats/monthly', to: 'stats#monthly'
         get '/stats/annually', to: 'stats#annually'
         patch '/daily_logs/update_training_day', to: 'daily_logs#update_training_day'
+        get '/daily_logs/today', to: 'daily_logs#today'
 
         resources :daily_logs do
           resources :meals do
